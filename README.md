@@ -45,3 +45,39 @@ $ kubectl apply -f 매니페스트 파일명
 ~~~
 $ kubectl get pods
 ~~~
+
+**Q. Pod 로 띄운 프로그램에 접속이 안되는 이유?**
+
+- 도커는 컨테이너 내부와 컨테이너 외부가 독립적으로 분리되어 있었다
+- 쿠버네티스는 Pod 내부의 네트워크를 컨테이너가 공유해서 같이 사용한다.
+- Pod 의 네트워크는 로컬 컴퓨터의 네트워크와 독립적으로 분리되어 있다.
+  - 이 때문에 Pod 로 띄운 예: Nginx 에 아무리 요청을 보내도 응답이 없던 것
+
+### Pod 접근
+1. Pod 내부로 들어가서 접근하기
+~~~
+$ kubectl exec -it pod명 -- bash
+
+(Pod 내부 접속후)
+$ curl localhost:80
+~~~
+
+2. Pod 의 내부 네트워크를 외부에서 접속할 수 있도록 포트포워딩(=포트 연결하기)
+
+<img alt="pod_connect" height="300" width="500" src="https://github.com/user-attachments/assets/67f35bb0-341e-4bb4-a91b-f44d29a1e407"/>
+<br>
+
+~~~
+$ sudo kubectl port-forward pod/pod명 local포트번호:pod포트번호
+
+예: kubectl port-forward pod/nginx-pod 80:80
+
+(참고)
+Mac 기준에서 80번 포트에 대해 포트포워딩을 하려면 권한이 필요하기 때문에 sudo 붙여서 실행
+sudo 없을시, permission denied 발생
+~~~
+
+### Pod 삭제
+~~~
+$ kubectl delete pod pod명
+~~~
