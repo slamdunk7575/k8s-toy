@@ -64,7 +64,7 @@ $ curl localhost:80
 
 2. Pod 의 내부 네트워크를 외부에서 접속할 수 있도록 포트포워딩(=포트 연결하기)
 
-<img alt="pod_connect" height="300" width="500" src="https://github.com/user-attachments/assets/67f35bb0-341e-4bb4-a91b-f44d29a1e407"/>
+<img alt="pod_connect" height="300" width="600" src="https://github.com/user-attachments/assets/67f35bb0-341e-4bb4-a91b-f44d29a1e407"/>
 <br>
 
 ~~~
