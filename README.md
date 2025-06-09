@@ -81,3 +81,33 @@ sudo 없을시, permission denied 발생
 ~~~
 $ kubectl delete pod pod명
 ~~~
+
+### Spring Boot 서버 Pod 로 띄우기
+
+1. 도커 이미지 생성
+~~~
+프로젝트 build
+$ ./gradlew clean build
+
+도커 이미지 생성
+$ docker build -t 이미지명 .
+
+도커 이미지 확인
+$ docker image ls
+~~~
+
+2. Pod 생성
+~~~
+(매니페스트 파일 작성후)
+$ kubectl apply -f 매니페스트 파일명
+~~~
+
+Q. Pod 가 잘 생성되었는지 확인시, 아래와 같이 **ImagePullBackOff** 상태의 에러가 발생하는 이유?
+~~~
+Pod 확인
+$ kubectl get pods
+
+(결과)
+NAME         READY   STATUS             RESTARTS   AGE
+spring-pod   0/1     ImagePullBackOff   0          3s
+~~~
