@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+
+# metadata 는 Pod 에 대한 기본적인 정보를 작성하는것
+metadata:
+  # Pod 의 이름을 붙이는 것 (다른것으로 변경해도 상관없음)
+  name: spring-pod
+
+# spec 은 Pod 에 대한 세부정보를 작성하는것
+spec:
+  # Pod 내부에서 실행되는 컨테이너 정보
+  containers:
+    - name: spring-container
+      # 만들어둔 도커 이미지(예: spring-server)를 활용해서 컨테이너를 띄우로 Pod 를 생성
+      image: spring-server
+      # ports 는 Pod 내부에 컨테이너(Spring) 를 띄울때, 몇번 port 에서 실행되는지 명시적으로 알려주는것 (문서화)
+      ports:
+        - containerPort: 8080
