@@ -16,3 +16,5 @@ spec:
       # ports 는 Pod 내부에 컨테이너(Spring) 를 띄울때, 몇번 port 에서 실행되는지 명시적으로 알려주는것 (문서화)
       ports:
         - containerPort: 8080
+      # 이미지 풀 정책 설정(예: Always, IfNotPresent, Never)
+      imagePullPolicy: IfNotPresent
