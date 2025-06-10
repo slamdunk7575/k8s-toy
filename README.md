@@ -131,7 +131,7 @@ spring-pod   0/1     ImagePullBackOff   0          3s
 3. **Never**
    - 로컬에서만 이미지를 가져온다.
 
-- 이미지 태그가 **latest** 이거나 명시되어 있지 않은 경우 (예: spring-server:latest): imagePullPolicy 는 **Always** 로 설정됨
+- 이미지 태그가 **latest** 이거나 **명시되어 있지 않은** 경우 (예: spring-server:latest): imagePullPolicy 는 **Always** 로 설정됨
 - 이미지 태그가 **latest** 가 아닌 경우 (예: spring-server:1.0): imagePullPolicy 는 **IfNotPresent** 로 설정됨
 
 따라서 기존 매니페스트 파일은 이미지 태그가 명시되어 있지 않았기 때문에 imagePullPolicy 가 **Always** 로 작동하였을 것이다. 
