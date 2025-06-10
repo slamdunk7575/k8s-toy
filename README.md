@@ -115,28 +115,30 @@ NAME         READY   STATUS             RESTARTS   AGE
 spring-pod   0/1     ImagePullBackOff   0          3s
 ~~~
 
-이 문제는 이미지 풀 정책(Image Pull Policy) 때문에 발생한 것이다.
+이 문제는 **이미지 풀 정책(Image Pull Policy)** 때문에 발생한 것이다.
 
 ### 이미지 풀 정책 (Image Pull Policy) 이란?
-- 이미지 풀 정책이란 쿠버네티스가 .yaml 파일을 읽어 Pod 를 생성할때, 이미지를 어떻게 Pull 받아올 것인지에
-대한 정책을 의미함
+- 이미지 풀 정책이란? 쿠버네티스가 .yaml 파일을 읽어 Pod 를 생성할때, 이미지를 어떻게 Pull 받아올 것인지에
+대한 정책을 의미한다.
 
-1. Always
-- 로컬에서 이미지를 가져오지 않고 무조건 레지스트리(예: DockerHub, AWS ECR 같은 원격 이미지 저장소)에서 가져온다.
+1. **Always**
+   - 로컬에서 이미지를 가져오지 않고 무조건 레지스트리(예: DockerHub, AWS ECR 같은 원격 이미지 저장소)에서 가져온다.
 
-2. IfNotPresent
-- 로컬에서 이미지를 먼저 가져온다. 
-- 만약, 이미지가 없을 경우에만 레지스트리에서 가져온다.
+2. **IfNotPresent**
+   - 로컬에서 이미지를 먼저 가져온다. 
+   - 만약, 이미지가 없을 경우에만 레지스트리에서 가져온다.
 
-3. Never
-- 로컬에서만 이미지를 가져온다.
+3. **Never**
+   - 로컬에서만 이미지를 가져온다.
 
 - 이미지 태그가 **latest** 이거나 명시되어 있지 않은 경우 (예: spring-server:latest): imagePullPolicy 는 **Always** 로 설정됨
 - 이미지 태그가 **latest** 가 아닌 경우 (예: spring-server:1.0): imagePullPolicy 는 **IfNotPresent** 로 설정됨
 
-따라서 기존 매니페스트 파일은 imagePullPolicy 가 Always 로 작동하였을 것이고 
-로컬에서 이미지를 가져오지 않고 레지스트리에서 가져오려 하여 에러가 발생한 것이다.
-예: spring-server 라는 이미지는 DockerHub 같은 저장소에 올린적이 없기 때문에 이미지를 받아오지 못한것
+따라서 기존 매니페스트 파일은 이미지 태그가 명시되어 있지 않았기 때문에 imagePullPolicy 가 **Always** 로 작동하였을 것이다. 
+
+즉, 로컬에서 이미지를 가져오지 않고 레지스트리에서 가져오려 하여 에러가 발생한 것이다.
+
+예: spring-server 라는 이미지는 DockerHub 같은 저장소에 올린적이 없기 때문에 이미지를 받아오지 못한 것이다.
 
 ### 해결: 아래처럼 imagePullPolicy 정책을 설정해주자
 ~~~
