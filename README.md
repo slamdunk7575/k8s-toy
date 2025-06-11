@@ -197,3 +197,28 @@ $ kubectl port-forward pod/web-server-pod 1234:80
 (Pod 삭제)
 $ kubectl delete pod web-server-pod
 ~~~
+
+### 프론트엔드(Next.js) 서버를 Pod 로 띄우기
+~~~
+(Next.js 서버 프로젝트 생성)
+$ npx create-next-app
+
+(도커 이미지 생성)
+$ docker build -t next-server .
+
+(Pod 생성)
+$ kubectl apply -f next-pod.yaml
+
+(Pod 확인)
+$ kubectl get pods
+
+(Pod 요청 보내기)
+방법.1
+$ kubectl exec -it next-pod -- bash
+
+방법.2
+$ kubectl port-forward pod/next-pod 1234:3000
+
+(Pod 삭제)
+$ kubectl delete pod next-pod
+~~~
