@@ -93,7 +93,7 @@ $ kubectl delete pod pod명
 $ ./gradlew clean build
 
 도커 이미지 생성
-$ docker build -t 이미지명 .
+$ docker build -t 이미지명 도커파일경로 (예: . 은 현재 폴더 경로)
 
 도커 이미지 확인
 $ docker image ls
@@ -168,9 +168,32 @@ $ kubectl get pods
 (Pod 요청 보내기)
 방법.1
 $ kubectl exec -it spring-pod -- bash
+
 방법.2
 $ kubectl port-forward pod/spring-pod 1234:8080
 
 (Pod 삭제)
 $ kubectl delete pod spring-pod
+~~~
+
+### 프론트엔드(HTML, CSS, Nginx) 서버를 Pod 로 띄우기
+~~~
+(도커 이미지 생성)
+$ docker build -t my-web-server .
+
+(Pod 생성)
+$ kubectl apply -f web-server-pod.yaml
+
+(Pod 확인)
+$ kubectl get pods
+
+(Pod 요청 보내기)
+방법.1
+$ kubectl exec -it web-server-pod -- bash
+
+방법.2
+$ kubectl port-forward pod/web-server-pod 1234:80
+
+(Pod 삭제)
+$ kubectl delete pod web-server-pod
 ~~~
