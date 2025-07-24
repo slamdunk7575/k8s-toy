@@ -223,7 +223,7 @@ $ kubectl port-forward pod/next-pod 1234:3000
 $ kubectl delete pod next-pod
 ~~~
 
-### 만약 Spring 서버 Pod를 3개 띄우고 싶다면? 
+### Q. 만약 Spring 서버 Pod를 3개 띄우고 싶다면? 
 - 아래처럼 copy & paste 로 3개는 어찌저찌 띄우겠지만, 
 만약 100개의 서버를 띄워야 한다면 손가락이 매우 아플것이다.
 
