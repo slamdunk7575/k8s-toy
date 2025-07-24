@@ -273,8 +273,6 @@ $ kubectl logs 파드명
 /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
 /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
-10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
 ...
 ~~~
 
@@ -291,12 +289,12 @@ $ kubectl exec -it 파드명 -- sh
 만약 `bash`가 설치되어 있지 않은데 `$ kubectl exec -it nginx-pod -- bash` 명령어를 입력하면 에러가 뜨면서 컨테이너 접속이 안된다.
 그럴 때는 `$ kubectl exec -it nginx-pod -- sh`로 접속을 해보자
 
-
+  
 ## Deployment 란?
 
 ### Q. 만약 Spring 서버 Pod를 3개 띄우고 싶다면? 
-- 아래처럼 copy & paste 로 3개는 어찌저찌 띄우겠지만, 
-만약 100개의 서버를 띄워야 한다면 손가락이 매우 아플것이다.
+- 아래처럼 copy & paste 로 3개는 어찌저찌 띄우겠지만,
+Q. 만약 100개의 서버를 띄워야 한다면? 손가락이 매우 아플것이다.
 
 - 서비스를 운영하다보면 시간, 이벤트 등에 따라 트래픽이 시시각각 변하게 된다.
 트래픽에 맞게 서버의 대수를 바꿔줘야 한다면 아래와 같은 방법으로는 매우 불편할 것이다.
@@ -330,7 +328,5 @@ spec:
     - name: spring-container
       image: spring-server
       imagePullPolicy: IfNotPresent
-      ports:
-        - containerPort: 8080
-
 ...
+~~~
