@@ -224,6 +224,8 @@ $ kubectl delete pod next-pod
 ~~~
 
 ### Pod 디버깅 하는 방법
+- Pod 의 상태를(예: ErrImagePull) 확인해서 'Image 를 받아오다 에러가 났구나?' 라고 생각할 수 있지만
+이것만 보고 원인을 알아낼 수 어려운 경우가 있다.
 
 ~~~
 apiVersion: v1
@@ -250,9 +252,6 @@ $ kubectl get pods
 NAME        READY   STATUS         RESTARTS   AGE
 nginx-pod   0/1     ErrImagePull   0          78s
 ~~~
-
-- Pod 의 상태를(예: ErrImagePull) 확인해서 'Image 를 받아오다 에러가 났구나?' 라고 생각할 수 있지만
-이것만 보고 원인을 알아낼 수 어려운 경우가 있다.
 
 ### 방법1. Pod 가 실행될때 에러가 발생한 경우 (리소스 및 이벤트 확인)
 ~~~
