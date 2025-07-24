@@ -222,3 +222,44 @@ $ kubectl port-forward pod/next-pod 1234:3000
 (Pod 삭제)
 $ kubectl delete pod next-pod
 ~~~
+
+### 만약 Spring 서버 Pod를 3개 띄우고 싶다면? 
+- 아래처럼 copy & paste 로 3개는 어찌저찌 띄우겠지만, 
+만약 100개의 서버를 띄워야 한다면 손가락이 매우 아플것이다.
+
+- 서비스를 운영하다보면 시간, 이벤트 등에 따라 트래픽이 시시각각 변하게 된다.
+트래픽에 맞게 서버의 대수를 바꿔줘야 한다면 아래와 같은 방법으로는 매우 불편할 것이다.
+
+- 이런 불편함을 해결해주기 위한 쿠버네티스의 기능이 **디플로이먼트(Deployment)** 이다.
+
+~~~
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: spring-pod-1
+
+spec:
+  containers:
+    - name: spring-container
+      image: spring-server
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 8080
+      
+---
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: spring-pod-2
+
+spec:
+  containers:
+    - name: spring-container
+      image: spring-server
+      imagePullPolicy: IfNotPresent
+      ports:
+        - containerPort: 8080
+
+...
