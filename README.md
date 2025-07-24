@@ -223,6 +223,77 @@ $ kubectl port-forward pod/next-pod 1234:3000
 $ kubectl delete pod next-pod
 ~~~
 
+### Pod 디버깅 하는 방법
+
+~~~
+apiVersion: v1
+kind: Pod
+
+metadata:
+  name: nginx-pod
+
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:1.26.5 # 실제 없는 이미지 태그
+      ports:
+        - containerPort: 80
+~~~
+
+~~~
+Pod 생성
+$ kubectl apply -f nginx-pod.yaml
+
+Pod 확인
+$ kubectl get pods
+
+NAME        READY   STATUS         RESTARTS   AGE
+nginx-pod   0/1     ErrImagePull   0          78s
+~~~
+
+- Pod 의 상태를(예: ErrImagePull) 확인해서 'Image 를 받아오다 에러가 났구나?' 라고 생각할 수 있지만
+이것만 보고 원인을 알아낼 수 어려운 경우가 있다.
+
+### 방법1. Pod 가 실행될때 에러가 발생한 경우 (리소스 및 이벤트 확인)
+~~~
+$ kubectl describe pod 파드명
+
+예: $ kubectl describe pod nginx-pod
+Failed to pull image "nginx:1.26.5": Error response from daemon: 
+manifest for nginx:1.26.5 not found: manifest unknown: manifest unknown
+
+자세한 에러 메시지를 확인 할 수 있다.
+~~~
+
+### 방법2. Pod 는 잘 실행됬는데, 컨테이너가 발생시키는 로그를 확인하고 싶은 경우
+~~~
+$ kubectl logs 파드명
+
+예: kubectl logs nginx-pod
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+...
+~~~
+
+### 방법3. Pod 의 내부에 접속해서 확인하는 방법
+~~~
+$ kubectl exec -it 파드명 -- bash
+
+$ kubectl exec -it 파드명 -- sh
+~~~
+
+- 도커에서 컨테이너로 접속하는 명령어 `$docker exec -it 컨테이너 ID bash` 와 비슷하다.
+
+- 컨테이너 종류에 따라 컨테이너 내부에 `bash` 가 설치되어 있을 수도 있고, `sh`가 설치되어 있을 수도 있다.
+만약 `bash`가 설치되어 있지 않은데 `$ kubectl exec -it nginx-pod -- bash` 명령어를 입력하면 에러가 뜨면서 컨테이너 접속이 안된다.
+그럴 때는 `$ kubectl exec -it nginx-pod -- sh`로 접속을 해보자
+
+
+## Deployment 란?
+
 ### Q. 만약 Spring 서버 Pod를 3개 띄우고 싶다면? 
 - 아래처럼 copy & paste 로 3개는 어찌저찌 띄우겠지만, 
 만약 100개의 서버를 띄워야 한다면 손가락이 매우 아플것이다.
