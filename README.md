@@ -329,3 +329,91 @@ spec:
       imagePullPolicy: IfNotPresent
 ...
 ~~~
+
+### Deployment 구조
+<img alt="deployment_img" width="838" height="607" src="https://github.com/user-attachments/assets/61d7113a-b700-443d-af77-47ed018ec1b9" />
+
+- Deployment가 ReplicaSet을 관리하고 ReplicaSet이 여러 Pod를 관리하는 구조
+  - Replica: 복제본
+  - ReplicaSet: 복제본끼리 묶음
+
+
+### Deployment 정의
+~~~
+apiVersion: apps/v1
+kind: Deployment
+
+# Deployment 기본 정보
+metadata:
+  name: spring-deployment
+
+# Deployment 세부 정보
+spec:
+  # 생성할 Pod 의 복제본 갯수
+  replicas: 3
+  # Deployment 입장에서 어떤 Pod 를 배포할지 명시적으로 나타냄
+  # 예: 나는 app: backend-app 이라는 label 을 가진(matchLabel 와 일치하는) Pod 를 Deployment 를 통해 배포할거야
+  selector:
+    matchLabels:
+      app: backend-app
+
+  # 배포할 Pod 에 대한 정보
+  template:
+    metadata:
+      # 레이블? 카테고리 라고 이해해면 쉽다
+      # 생성할 Pod 에 카테고리를 임의로 지정해서 붙일 수 있다
+      # 카테고리 종류와 세부 카테고리는 우리가 지정하기 나름
+      labels:
+        app: backend-app
+    spec:
+      containers:
+        - name: spring-container
+          image: spring-server
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+~~~
+
+1. Deployment 생성
+~~~
+$ kubectl apply -f 매니페스트 파일명
+~~~
+
+2. Deployment 확인
+~~~
+$ kubectl get deployment
+
+예:
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+spring-deployment   3/3     3            3           8s
+~~~
+
+3. ReplicaSet 확인
+~~~
+$ kubectl get replicaset
+
+예:
+NAME                           DESIRED   CURRENT   READY   AGE
+spring-deployment-7565bdff49   3         3         3       27m
+
+- replicaset 에 대한 이름을 정의하지 않아 랜덤한 이름이 붙음
+~~~
+
+3. Pod 확인
+~~~
+$ kubectl get pod
+
+예:
+NAME                                 READY   STATUS    RESTARTS   AGE
+spring-deployment-7565bdff49-6xjnx   1/1     Running   0          29m
+spring-deployment-7565bdff49-tg474   1/1     Running   0          29m
+spring-deployment-7565bdff49-w2gr8   1/1     Running   0          29m
+
+- Pod 를 일일이 띄우지 않았는데, Deployment 가 알아서 3개의 Pod 를 띄워줌
+~~~
+
+### Q. 각 Pod 에 요청을 균등하게 분배하려면?
+- 백엔드 서버 3개를 각각의 Pod 에 띄웠다. 실제 요청을 보낼때, 각각의 서버에 균등하게 트래픽이 분배되어야 한다. 
+- 사용자가 각각의 서버에 균등하게 요청을 보낼수는 없다. 
+- 따라서 Pod 앞단에 알아서 여러 Pod 에 균등하게 요청을 분배해줄 무언가가 필요하다.
+- 쿠버네티스에서는 **Service**가 여러 Pod 에 균등하게 요청을 분배해주는 역할을 한다.
