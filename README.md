@@ -331,9 +331,9 @@ spec:
 ~~~
 
 ### Deployment 구조
-<img alt="deployment_img" width="838" height="607" src="https://github.com/user-attachments/assets/61d7113a-b700-443d-af77-47ed018ec1b9" />
+<img alt="deployment_img" width="970" height="732" src="https://github.com/user-attachments/assets/439b3342-99c4-4444-9b20-7aba2b54959c" />
 
-- Deployment가 ReplicaSet을 관리하고 ReplicaSet이 여러 Pod를 관리하는 구조
+- Deployment 가 ReplicaSet 을 관리하고 ReplicaSet 이 여러 Pod 를 관리하는 구조
   - Replica: 복제본
   - ReplicaSet: 복제본끼리 묶음
 
@@ -416,4 +416,4 @@ spring-deployment-7565bdff49-w2gr8   1/1     Running   0          29m
 - 백엔드 서버 3개를 각각의 Pod 에 띄웠다. 실제 요청을 보낼때, 각각의 서버에 균등하게 트래픽이 분배되어야 한다. 
 - 사용자가 각각의 서버에 균등하게 요청을 보낼수는 없다. 
 - 따라서 Pod 앞단에 알아서 여러 Pod 에 균등하게 요청을 분배해줄 무언가가 필요하다.
-- 쿠버네티스에서는 **Service**가 여러 Pod 에 균등하게 요청을 분배해주는 역할을 한다.
+- 쿠버네티스에서는 **서비스(Service)** 가 여러 Pod 에 균등하게 요청을 분배해주는 역할을 한다.
